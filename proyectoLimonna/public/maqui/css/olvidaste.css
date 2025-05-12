@@ -1,0 +1,124 @@
+/* index.html*/
+/*******************************************************************/
+
+/*Estilo para el contenedor*/
+
+#ingreso{
+    margin-top: 7em;
+    max-width: 30em;
+    margin-bottom: 7em;
+    
+}
+
+/*Estilo para el botón de ingresar*/
+
+#botonIngresar{
+   
+    margin-top: 0.8em;
+    margin-bottom: 0.3em;
+     
+}
+
+
+/*******************************************************************/
+/* Estilos generales */
+body {
+    background-color: #FFF;
+    font-family: 'Adirek Sans', sans-serif;
+    color: #545454;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Contenedor del formulario */
+#ingreso {
+    background-color: #FFF;
+    padding: 3rem;
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+}
+
+/* Imagen superior */
+#ingreso img {
+    max-width: 80%;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Estilos para los labels */
+label {
+    font-family: 'Centaur', serif;
+    font-size: 1.2rem;
+    color: #27827B;
+    font-weight: bold;
+    display: block;
+    margin-top: 20px;
+}
+
+/* Estilos para los inputs */
+input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #014D49;
+    border-radius: 10px;
+    background-color: #FFF;
+    font-size: 1rem;
+    color: #333;
+    margin-top: 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+input:focus {
+    border-color: #27827B;
+    outline: none;
+    background-color: #F4F4F4;
+}
+
+/* Botón de registro */
+#botonIngresar {
+    background-color: #014D49;
+    color: #FFF;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+#botonIngresar:hover {
+    background-color: #27827B;
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+    #ingreso {
+        width: 90%;
+        padding: 2.5rem;
+    }
+
+    input {
+        font-size: 1rem;
+    }
+}
+
+/* Estilos adicionales */
+#ingreso {
+    margin-top: 7em;
+    max-width: 30em;
+    margin-bottom: 7em;
+}
+
+#botonIngresar {
+    margin-top: 0.8em;
+    margin-bottom: 0.3em;
+}
+
