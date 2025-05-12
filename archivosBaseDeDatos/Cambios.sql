@@ -1,0 +1,8 @@
+
+ALTER TABLE Usuario
+ADD COLUMN contrasena VARCHAR(255) NOT NULL;
+
+DESCRIBE Usuario;
+
+ALTER TABLE Usuario
+DROP COLUMN Activo;
