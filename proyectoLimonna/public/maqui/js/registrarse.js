@@ -222,8 +222,12 @@ formIngreso.addEventListener("submit", async (e) => {
 
     const resultado = await respuesta.json();
     if (respuesta.ok) {
-      alert("Usuario registrado con éxito");
+      alert(`Usuario registrado con éxito.\nEste es su usuario: ${NombreUsuario}`)
       formIngreso.reset();
+      // Usamos setTimeout para que el redireccionamiento ocurra después del alert
+    setTimeout(() => {
+        window.location.href = "/index.html";
+    }, 100); // 100 milisegundos (0.1 segundos) es suficiente
     } else {
       alert("Error: " + resultado.mensaje);
     }
