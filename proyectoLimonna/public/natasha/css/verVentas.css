@@ -1,0 +1,98 @@
+/* public/natasha/css/verVentas.css */
+
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background: #fafafa;
+  color: #333;
+}
+
+/* Encabezados */
+h1, h2 {
+  color: #27827b;
+  margin-bottom: 10px;
+}
+
+/* Contenedor de filtros */
+.filtros {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filtros label {
+  font-weight: bold;
+}
+
+.filtros input[type="date"],
+.filtros select {
+  padding: 5px;
+  font-size: 1rem;
+}
+
+.filtros button {
+  background: #27827b;
+  color: #fff;
+  border: none;
+  padding: 7px 15px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filtros button:hover {
+  background: #1f665e;
+}
+
+/* Tabla de ventas */
+#tablaVentas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#tablaVentas th,
+#tablaVentas td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+#tablaVentas thead {
+  background: #e0f2f1;
+}
+
+#tablaVentas tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+/* Indicadores */
+#indicadores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.indicador {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 15px;
+  width: 200px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.indicador h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #005b4f;
+}
+
+.indicador p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+}

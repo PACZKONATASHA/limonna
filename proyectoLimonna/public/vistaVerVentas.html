@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ver Ventas</title>
+  <link rel="stylesheet" href="/natasha/css/verVentas.css" />
+</head>
+<body>
+  <h1>Ver Ventas</h1>
+
+  <div class="filtros">
+    <label for="fechaFiltro">Fecha:</label>
+    <input type="date" id="fechaFiltro" />
+
+    <label for="usuarioFiltro">Usuario:</label>
+    <select id="usuarioFiltro">
+      <option value="">Todos</option>
+      <!-- Se completará dinámicamente -->
+    </select>
+
+    <button id="btnBuscar">Buscar</button>
+  </div>
+
+  <!-- Listado de ventas -->
+  <section id="seccionVentas">
+    <h2>Listado de Ventas</h2>
+    <table id="tablaVentas">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Producto</th>
+          <th>Precio (ARS)</th>
+          <th>Usuario</th>
+          <th>Tipo Turno</th>
+          <th>Tipo Pago</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filas generadas dinámicamente -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Indicadores -->
+  <section id="seccionIndicadores">
+    <h2>Indicadores por Turno</h2>
+    <div id="indicadores">
+      <!-- Cada indicador se generará dinámicamente -->
+    </div>
+  </section>
+
+  <script src="/natasha/js/verVentas.js"></script>
+</body>
+</html>
