@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ver Ventas</title>
   <link rel="stylesheet" href="/natasha/css/verVentas.css" />
+
   <style>
+    /* Botón «Volver» */
     .btn-volver {
       position: absolute;
       top: 20px;
       right: 20px;
       background-color: #28a745;
-      color: white;
+      color: #fff;
       padding: 6px 12px;
       font-size: 14px;
       border: none;
@@ -20,10 +22,18 @@
       text-decoration: none;
       transition: background-color 0.3s ease;
     }
+    .btn-volver:hover { background-color: #218838; }
 
-    .btn-volver:hover {
-      background-color: #218838;
+    /* Filtros */
+    .filtros { margin-bottom: 1rem; display: flex; gap: .5rem; flex-wrap: wrap; }
+    .filtros label { font-weight: 600; }
+    .filtros input, .filtros select, .filtros button {
+      padding: .25rem .5rem;
+      border-radius: 4px;
+      border: 1px solid #ced4da;
+      font-size: 14px;
     }
+    #modoVista { width: 120px; }
   </style>
 </head>
 <body>
@@ -31,47 +41,44 @@
 
   <h1>Ver Ventas</h1>
 
+  <!-- Barra de filtros -->
   <div class="filtros">
+    <label for="modoVista">Agrupar por:</label>
+    <select id="modoVista">
+      <option value="dia">Día</option>
+      <option value="semana">Semana</option>
+    </select>
+
+    <!-- Filtro por día -->
     <label for="fechaFiltro">Fecha:</label>
     <input type="date" id="fechaFiltro" />
 
+    <!-- Filtro por semana (ISO‑8601) -->
+    <label for="semanaFiltro" style="display:none;">Semana:</label>
+    <input type="week" id="semanaFiltro" style="display:none;" />
+
+    <!-- Filtro por usuario -->
     <label for="usuarioFiltro">Usuario:</label>
     <select id="usuarioFiltro">
       <option value="">Todos</option>
-      <!-- Se completará dinámicamente -->
     </select>
 
     <button id="btnBuscar">Buscar</button>
   </div>
 
-  <!-- Listado de ventas -->
+  <!-- Tabla/Listado -->
   <section id="seccionVentas">
     <h2>Listado de Ventas</h2>
     <table id="tablaVentas">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Fecha</th>
-          <th>Hora</th>
-          <th>Producto</th>
-          <th>Precio (ARS)</th>
-          <th>Usuario</th>
-          <th>Tipo Turno</th>
-          <th>Tipo Pago</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Filas generadas dinámicamente -->
-      </tbody>
+      <thead></thead>
+      <tbody></tbody>
     </table>
   </section>
 
   <!-- Indicadores -->
   <section id="seccionIndicadores">
     <h2>Indicadores por Turno</h2>
-    <div id="indicadores">
-      <!-- Cada indicador se generará dinámicamente -->
-    </div>
+    <div id="indicadores"></div>
   </section>
 
   <script src="/natasha/js/verVentas.js"></script>

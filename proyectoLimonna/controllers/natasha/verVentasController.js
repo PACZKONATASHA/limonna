@@ -1,12 +1,20 @@
-// controllers/natasha/verVentasController.js
 const { pool } = require('../../db/db');
 
-// Helper para filtrar por fecha, igual que antes
+/* ---------- Helpers de fechas ---------- */
 function buildFechaCondition(fecha, params) {
   params.push(fecha);
   return "DATE(CONCAT(v.Año,'-',LPAD(v.Mes,2,'0'),'-',LPAD(v.Dia,2,'0'))) = ?";
 }
 
+function buildSemanaCondition(semanaISO, params) {
+  // Formato recibido: "2025-W29"  →  yearWeek = 202529
+  const [year, wk] = semanaISO.split('-W');
+  const yearWeek   = parseInt(`${year}${wk.padStart(2, '0')}`, 10);
+  params.push(yearWeek);
+  return "YEARWEEK(DATE(CONCAT(v.Año,'-',LPAD(v.Mes,2,'0'),'-',LPAD(v.Dia,2,'0'))), 3) = ?";
+}
+
+/* ---------- Endpoints ---------- */
 // GET /ver-ventas/usuarios
 async function listarUsuarios(req, res) {
   try {
@@ -16,7 +24,6 @@ async function listarUsuarios(req, res) {
       WHERE Activo = TRUE
       ORDER BY Apellido, Nombre
     `);
-    // Devolvemos un arreglo de objetos: { DNI, Nombre, Apellido }
     res.status(200).json(rows);
   } catch (err) {
     console.error('Error al listar usuarios:', err.message);
@@ -24,34 +31,55 @@ async function listarUsuarios(req, res) {
   }
 }
 
-// GET /ver-ventas/listar?fecha=YYYY-MM-DD&dni=10000001
+// GET /ver-ventas/listar
 async function listarVentas(req, res) {
   try {
-    const { fecha, dni } = req.query;
+    const { fecha, semana, dni } = req.query;
     const whereClauses = [];
-    const params = [];
+    const params       = [];
 
-    if (fecha) {
-      whereClauses.push(buildFechaCondition(fecha, params));
-    }
-    if (dni) {
-      whereClauses.push("v.DNI = ?");
-      params.push(dni);
-    }
+    /* Filtros */
+    if (fecha)  whereClauses.push(buildFechaCondition(fecha, params));
+    if (semana) whereClauses.push(buildSemanaCondition(semana, params));
+    if (dni)   { whereClauses.push("v.DNI = ?"); params.push(dni); }
 
     const whereSQL = whereClauses.length ? `WHERE ${whereClauses.join(' AND ')}` : '';
 
+    /* ----------------  MODO SEMANAL  ---------------- */
+    if (semana) {
+      const [rows] = await pool.query(
+        `
+        SELECT
+          CONCAT(
+            YEAR(DATE(CONCAT(v.Año,'-',LPAD(v.Mes,2,'0'),'-',LPAD(v.Dia,2,'0')))),
+            '-W',
+            LPAD(WEEK(DATE(CONCAT(v.Año,'-',LPAD(v.Mes,2,'0'),'-',LPAD(v.Dia,2,'0'))), 3), 2, '0')
+          ) AS semana,
+          COUNT(*)                       AS cantidadVentas,
+          SUM(p.PrecioUnitario)          AS totalVentas
+        FROM Venta v
+        JOIN Producto p ON p.ID_Producto = v.ID_Producto
+        ${whereSQL}
+        GROUP BY semana
+        ORDER BY semana DESC
+        `,
+        params
+      );
+      return res.status(200).json(rows);
+    }
+
+    /* ----------------  MODO DIARIO (por defecto)  ---------------- */
     const [rows] = await pool.query(
       `
       SELECT
         v.ID_Venta,
         CONCAT(LPAD(v.Dia,2,'0'), '/', LPAD(v.Mes,2,'0'), '/', v.Año) AS fecha,
-        TIME_FORMAT(v.Hora, '%H:%i')                                         AS hora,
-        p.Nombre                                                              AS producto,
-        p.PrecioUnitario                                                      AS precio,
-        CONCAT(u.Nombre, ' ', u.Apellido)                                      AS cliente,
-        tt.nombre                                                              AS tipoTurno,
-        tp.nombre                                                              AS tipoPago
+        TIME_FORMAT(v.Hora, '%H:%i')                                  AS hora,
+        p.Nombre                                                      AS producto,
+        p.PrecioUnitario                                              AS precio,
+        CONCAT(u.Nombre, ' ', u.Apellido)                             AS cliente,
+        tt.nombre                                                     AS tipoTurno,
+        tp.nombre                                                     AS tipoPago
       FROM Venta v
       JOIN Producto   p  ON p.ID_Producto   = v.ID_Producto
       JOIN Usuario    u  ON u.DNI          = v.DNI
@@ -62,7 +90,6 @@ async function listarVentas(req, res) {
       `,
       params
     );
-
     res.status(200).json(rows);
   } catch (err) {
     console.error('Error al listar ventas:', err.message);
@@ -70,20 +97,16 @@ async function listarVentas(req, res) {
   }
 }
 
-// GET /ver-ventas/indicadores?fecha=YYYY-MM-DD&dni=10000001
+// GET /ver-ventas/indicadores
 async function indicadoresPorFecha(req, res) {
   try {
-    const { fecha, dni } = req.query;
+    const { fecha, semana, dni } = req.query;
     const whereClauses = [];
-    const params = [];
+    const params       = [];
 
-    if (fecha) {
-      whereClauses.push(buildFechaCondition(fecha, params));
-    }
-    if (dni) {
-      whereClauses.push("v.DNI = ?");
-      params.push(dni);
-    }
+    if (fecha)  whereClauses.push(buildFechaCondition(fecha, params));
+    if (semana) whereClauses.push(buildSemanaCondition(semana, params));
+    if (dni)   { whereClauses.push("v.DNI = ?"); params.push(dni); }
 
     const whereSQL = whereClauses.length ? `WHERE ${whereClauses.join(' AND ')}` : '';
 
@@ -105,35 +128,24 @@ async function indicadoresPorFecha(req, res) {
       params
     );
 
+    /* Armar estructura { tipoTurno, pagos: {ferro,efectivo,transferencia,total} } */
     const indicadoresMap = {};
-
     results.forEach(row => {
       const idTurno = row.ID_TipoTurno;
-      const nombreTurno = row.tipoTurno;
-      const pago = row.tipoPago;      // 'ferro', 'efectivo' o 'transferencia'
-      const suma = parseFloat(row.total);
-
       if (!indicadoresMap[idTurno]) {
         indicadoresMap[idTurno] = {
-          tipoTurno: nombreTurno,
-          pagos: {
-            ferro: 0,
-            efectivo: 0,
-            transferencia: 0,
-            total: 0
-          }
+          tipoTurno: row.tipoTurno,
+          pagos: { ferro: 0, efectivo: 0, transferencia: 0, total: 0 }
         };
       }
-
-      indicadoresMap[idTurno].pagos[pago] = suma;
-      indicadoresMap[idTurno].pagos.total += suma;
+      indicadoresMap[idTurno].pagos[row.tipoPago] = parseFloat(row.total);
+      indicadoresMap[idTurno].pagos.total        += parseFloat(row.total);
     });
 
-    const indicadoresArray = Object.keys(indicadoresMap)
-      .sort((a, b) => parseInt(a) - parseInt(b))
-      .map(key => indicadoresMap[key]);
-
-    res.status(200).json(indicadoresArray);
+    const indicadores = Object.values(indicadoresMap).sort(
+      (a, b) => a.tipoTurno.localeCompare(b.tipoTurno)
+    );
+    res.status(200).json(indicadores);
   } catch (err) {
     console.error('Error al calcular indicadores:', err.message);
     res.status(500).json({ mensaje: 'Error del servidor', error: err.message });
