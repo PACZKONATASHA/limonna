@@ -5,32 +5,33 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnBuscar').addEventListener('click', cargarDatos);
   document.getElementById('modoVista').addEventListener('change', toggleModo);
 
-  // Ajuste inicial de los filtros (muestra/oculta fecha/semana)
-  toggleModo();
+  toggleModo(); // ajuste inicial
 });
 
-/* ------------------  UI helpers  ------------------ */
+/* ------------  UI helpers  ------------ */
 function toggleModo() {
   const modo   = document.getElementById('modoVista').value;
+
   const lblDia = document.querySelector('label[for="fechaFiltro"]');
   const inpDia = document.getElementById('fechaFiltro');
   const lblSem = document.querySelector('label[for="semanaFiltro"]');
   const inpSem = document.getElementById('semanaFiltro');
+  const lblMes = document.querySelector('label[for="mesFiltro"]');
+  const inpMes = document.getElementById('mesFiltro');
+
+  // Ocultar todo primero
+  [lblDia, inpDia, lblSem, inpSem, lblMes, inpMes].forEach(el => el.style.display = 'none');
 
   if (modo === 'dia') {
-    lblDia.style.display = 'inline-block';
-    inpDia.style.display = 'inline-block';
-    lblSem.style.display = 'none';
-    inpSem.style.display = 'none';
-  } else {
-    lblDia.style.display = 'none';
-    inpDia.style.display = 'none';
-    lblSem.style.display = 'inline-block';
-    inpSem.style.display = 'inline-block';
+    lblDia.style.display = inpDia.style.display = 'inline-block';
+  } else if (modo === 'semana') {
+    lblSem.style.display = inpSem.style.display = 'inline-block';
+  } else { // mes
+    lblMes.style.display = inpMes.style.display = 'inline-block';
   }
 }
 
-/* ------------------  Filtros ------------------ */
+/* ------------  Filtros  ------------ */
 async function cargarUsuarios() {
   try {
     const res = await fetch('/ver-ventas/usuarios');
@@ -61,18 +62,21 @@ function cargarDatos() {
   if (modo === 'dia') {
     const fecha = document.getElementById('fechaFiltro').value;
     if (fecha) qs.append('fecha', fecha);
-  } else {
+  } else if (modo === 'semana') {
     const semana = document.getElementById('semanaFiltro').value;
     if (semana) qs.append('semana', semana);
+  } else { // mes
+    const mes = document.getElementById('mesFiltro').value;
+    if (mes) qs.append('mes', mes);
   }
 
   const query = `?${qs.toString()}`;
 
   cargarVentas(query, modo);
-  cargarIndicadores(query);
+  cargarIndicadores(query, modo);
 }
 
-/* ------------------  Listado de ventas ------------------ */
+/* ------------  Listado de ventas  ------------ */
 async function cargarVentas(queryString, modo) {
   try {
     const res = await fetch(`/ver-ventas/listar${queryString}`);
@@ -82,20 +86,15 @@ async function cargarVentas(queryString, modo) {
     const thead = document.querySelector('#tablaVentas thead');
     const tbody = document.querySelector('#tablaVentas tbody');
 
-    // Limpiar tabla
     thead.innerHTML = '';
     tbody.innerHTML = '';
 
     if (modo === 'dia') {
-      // Encabezado modo diario
-      thead.insertAdjacentHTML(
-        'beforeend',
-        `<tr>
-           <th>ID</th><th>Fecha</th><th>Hora</th><th>Producto</th>
-           <th>Precio (ARS)</th><th>Usuario</th><th>Tipo Turno</th><th>Tipo Pago</th>
-         </tr>`
-      );
-
+      thead.innerHTML = `
+        <tr>
+          <th>ID</th><th>Fecha</th><th>Hora</th><th>Producto</th>
+          <th>Precio (ARS)</th><th>Usuario</th><th>Tipo Turno</th><th>Tipo Pago</th>
+        </tr>`;
       data.forEach(v => {
         tbody.insertAdjacentHTML(
           'beforeend',
@@ -111,20 +110,31 @@ async function cargarVentas(queryString, modo) {
            </tr>`
         );
       });
-    } else {
-      // Encabezado modo semanal
-      thead.insertAdjacentHTML(
-        'beforeend',
-        `<tr>
-           <th>Semana (ISO)</th><th>Cantidad de Ventas</th><th>Total (ARS)</th>
-         </tr>`
-      );
-
+    } else if (modo === 'semana') {
+      thead.innerHTML = `
+        <tr>
+          <th>Semana (ISO)</th><th>Cantidad de Ventas</th><th>Total (ARS)</th>
+        </tr>`;
       data.forEach(v => {
         tbody.insertAdjacentHTML(
           'beforeend',
           `<tr>
              <td>${v.semana              }</td>
+             <td>${v.cantidadVentas      }</td>
+             <td>${parseFloat(v.totalVentas).toFixed(2)}</td>
+           </tr>`
+        );
+      });
+    } else { // mes
+      thead.innerHTML = `
+        <tr>
+          <th>Mes</th><th>Cantidad de Ventas</th><th>Total (ARS)</th>
+        </tr>`;
+      data.forEach(v => {
+        tbody.insertAdjacentHTML(
+          'beforeend',
+          `<tr>
+             <td>${v.mes                 }</td>
              <td>${v.cantidadVentas      }</td>
              <td>${parseFloat(v.totalVentas).toFixed(2)}</td>
            </tr>`
@@ -136,8 +146,8 @@ async function cargarVentas(queryString, modo) {
   }
 }
 
-/* ------------------  Indicadores ------------------ */
-async function cargarIndicadores(queryString) {
+/* ------------  Indicadores  ------------ */
+async function cargarIndicadores(queryString, modo) {
   try {
     const res = await fetch(`/ver-ventas/indicadores${queryString}`);
     if (!res.ok) throw new Error('No se pudieron recuperar los indicadores');
@@ -145,21 +155,25 @@ async function cargarIndicadores(queryString) {
     const indicadores = await res.json();
     const cont        = document.getElementById('indicadores');
 
-    /* ---------- Total del Día ---------- */
-    const totalDia = indicadores.reduce((acc, it) => acc + it.pagos.total, 0);
-    const supera   = totalDia > 1000;
+    const total = indicadores.reduce((acc, it) => acc + it.pagos.total, 0);
+    const supera = total > 1000;
+
+    const labelTotal =
+      modo === 'dia'    ? 'Total del Día'    :
+      modo === 'semana' ? 'Total de la Semana' :
+                          'Total del Mes';
+
     const totalHtml = `
       <div class="indicador-total">
         <div>
-          <h3>Total del Día</h3>
-          <p><strong>$${totalDia.toFixed(2)}</strong></p>
+          <h3>${labelTotal}</h3>
+          <p><strong>$${total.toFixed(2)}</strong></p>
           <p class="${supera ? 'comisiona' : 'nocomisiona'}">
             ${supera ? 'COMISIONA' : 'NO COMISIONA'}
           </p>
         </div>
       </div>`;
 
-    /* ---------- Indicadores individuales por turno ---------- */
     const detalleHtml = indicadores.map(it => `
       <div class="indicador">
         <h3>${it.tipoTurno}</h3>
@@ -171,7 +185,6 @@ async function cargarIndicadores(queryString) {
       </div>
     `).join('');
 
-    // Renderizar
     cont.innerHTML = totalHtml + detalleHtml;
   } catch (err) {
     console.error('Error cargando indicadores:', err);

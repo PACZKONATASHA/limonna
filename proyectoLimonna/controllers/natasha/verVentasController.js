@@ -1,20 +1,24 @@
 const { pool } = require('../../db/db');
 
-/* ---------- Helpers de fechas ---------- */
+/* ------------ Helpers de fechas ------------ */
 function buildFechaCondition(fecha, params) {
   params.push(fecha);
   return "DATE(CONCAT(v.Año,'-',LPAD(v.Mes,2,'0'),'-',LPAD(v.Dia,2,'0'))) = ?";
 }
 
 function buildSemanaCondition(semanaISO, params) {
-  // Formato recibido: "2025-W29"  →  yearWeek = 202529
   const [year, wk] = semanaISO.split('-W');
   const yearWeek   = parseInt(`${year}${wk.padStart(2, '0')}`, 10);
   params.push(yearWeek);
   return "YEARWEEK(DATE(CONCAT(v.Año,'-',LPAD(v.Mes,2,'0'),'-',LPAD(v.Dia,2,'0'))), 3) = ?";
 }
 
-/* ---------- Endpoints ---------- */
+function buildMesCondition(mesISO, params) { // mesISO = "YYYY-MM"
+  params.push(mesISO);
+  return "CONCAT(v.Año,'-',LPAD(v.Mes,2,'0')) = ?";
+}
+
+/* ------------ Endpoints ------------ */
 // GET /ver-ventas/usuarios
 async function listarUsuarios(req, res) {
   try {
@@ -34,18 +38,18 @@ async function listarUsuarios(req, res) {
 // GET /ver-ventas/listar
 async function listarVentas(req, res) {
   try {
-    const { fecha, semana, dni } = req.query;
+    const { fecha, semana, mes, dni } = req.query;
     const whereClauses = [];
     const params       = [];
 
-    /* Filtros */
     if (fecha)  whereClauses.push(buildFechaCondition(fecha, params));
     if (semana) whereClauses.push(buildSemanaCondition(semana, params));
+    if (mes)    whereClauses.push(buildMesCondition(mes, params));
     if (dni)   { whereClauses.push("v.DNI = ?"); params.push(dni); }
 
     const whereSQL = whereClauses.length ? `WHERE ${whereClauses.join(' AND ')}` : '';
 
-    /* ----------------  MODO SEMANAL  ---------------- */
+    /* ----------  MODO SEMANAL ---------- */
     if (semana) {
       const [rows] = await pool.query(
         `
@@ -55,8 +59,8 @@ async function listarVentas(req, res) {
             '-W',
             LPAD(WEEK(DATE(CONCAT(v.Año,'-',LPAD(v.Mes,2,'0'),'-',LPAD(v.Dia,2,'0'))), 3), 2, '0')
           ) AS semana,
-          COUNT(*)                       AS cantidadVentas,
-          SUM(p.PrecioUnitario)          AS totalVentas
+          COUNT(*)              AS cantidadVentas,
+          SUM(p.PrecioUnitario) AS totalVentas
         FROM Venta v
         JOIN Producto p ON p.ID_Producto = v.ID_Producto
         ${whereSQL}
@@ -68,7 +72,26 @@ async function listarVentas(req, res) {
       return res.status(200).json(rows);
     }
 
-    /* ----------------  MODO DIARIO (por defecto)  ---------------- */
+    /* ----------  MODO MENSUAL ---------- */
+    if (mes) {
+      const [rows] = await pool.query(
+        `
+        SELECT
+          CONCAT(v.Año,'-',LPAD(v.Mes,2,'0')) AS mes,
+          COUNT(*)              AS cantidadVentas,
+          SUM(p.PrecioUnitario) AS totalVentas
+        FROM Venta v
+        JOIN Producto p ON p.ID_Producto = v.ID_Producto
+        ${whereSQL}
+        GROUP BY mes
+        ORDER BY mes DESC
+        `,
+        params
+      );
+      return res.status(200).json(rows);
+    }
+
+    /* ----------  MODO DIARIO (por defecto) ---------- */
     const [rows] = await pool.query(
       `
       SELECT
@@ -100,12 +123,13 @@ async function listarVentas(req, res) {
 // GET /ver-ventas/indicadores
 async function indicadoresPorFecha(req, res) {
   try {
-    const { fecha, semana, dni } = req.query;
+    const { fecha, semana, mes, dni } = req.query;
     const whereClauses = [];
     const params       = [];
 
     if (fecha)  whereClauses.push(buildFechaCondition(fecha, params));
     if (semana) whereClauses.push(buildSemanaCondition(semana, params));
+    if (mes)    whereClauses.push(buildMesCondition(mes, params));
     if (dni)   { whereClauses.push("v.DNI = ?"); params.push(dni); }
 
     const whereSQL = whereClauses.length ? `WHERE ${whereClauses.join(' AND ')}` : '';
@@ -128,7 +152,6 @@ async function indicadoresPorFecha(req, res) {
       params
     );
 
-    /* Armar estructura { tipoTurno, pagos: {ferro,efectivo,transferencia,total} } */
     const indicadoresMap = {};
     results.forEach(row => {
       const idTurno = row.ID_TipoTurno;

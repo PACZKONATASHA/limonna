@@ -35,7 +35,7 @@
       border: 1px solid #ced4da;
       font-size: 14px;
     }
-    #modoVista { width: 120px; }
+    #modoVista { width: 130px; }
 
     /* Indicadores */
     #indicadores,
@@ -65,15 +65,20 @@
     <select id="modoVista">
       <option value="dia">Día</option>
       <option value="semana">Semana</option>
+      <option value="mes">Mes</option>
     </select>
 
     <!-- Filtro por día -->
     <label for="fechaFiltro">Fecha:</label>
     <input type="date" id="fechaFiltro" />
 
-    <!-- Filtro por semana (ISO-8601) -->
+    <!-- Filtro por semana (ISO‑8601) -->
     <label for="semanaFiltro" style="display:none;">Semana:</label>
     <input type="week" id="semanaFiltro" style="display:none;" />
+
+    <!-- Filtro por mes -->
+    <label for="mesFiltro" style="display:none;">Mes:</label>
+    <input type="month" id="mesFiltro" style="display:none;" />
 
     <!-- Filtro por usuario -->
     <label for="usuarioFiltro">Usuario:</label>
@@ -95,8 +100,7 @@
 
   <!-- Indicadores -->
   <section id="seccionIndicadores">
-    <h2>Indicadores por Turno</h2>
-    <!-- Total del Día + indicadores individuales -->
+    <h2>Indicadores</h2>
     <div id="indicadores"></div>
   </section>
 
