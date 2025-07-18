@@ -156,7 +156,7 @@ async function cargarIndicadores(queryString, modo) {
     const cont        = document.getElementById('indicadores');
 
     const total = indicadores.reduce((acc, it) => acc + it.pagos.total, 0);
-    const supera = total > 1000;
+    const supera = total > 1000000;
 
     const labelTotal =
       modo === 'dia'    ? 'Total del Día'    :
