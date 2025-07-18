@@ -27,15 +27,33 @@
     /* Filtros */
     .filtros { margin-bottom: 1rem; display: flex; gap: .5rem; flex-wrap: wrap; }
     .filtros label { font-weight: 600; }
-    .filtros input, .filtros select, .filtros button {
+    .filtros input,
+    .filtros select,
+    .filtros button {
       padding: .25rem .5rem;
       border-radius: 4px;
       border: 1px solid #ced4da;
       font-size: 14px;
     }
     #modoVista { width: 120px; }
+
+    /* Indicadores */
+    #indicadores,
+    .indicador-total { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .indicador,
+    .indicador-total > div {
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: .75rem 1rem;
+      min-width: 160px;
+      box-shadow: 0 0 4px rgba(0,0,0,.05);
+    }
+    /* Colores del resultado */
+    .comisiona   { color: #28a745; font-weight: 700; }
+    .nocomisiona { color: #007bff; font-weight: 700; }
   </style>
 </head>
+
 <body>
   <a href="/ventas" class="btn-volver">← Volver</a>
 
@@ -53,7 +71,7 @@
     <label for="fechaFiltro">Fecha:</label>
     <input type="date" id="fechaFiltro" />
 
-    <!-- Filtro por semana (ISO‑8601) -->
+    <!-- Filtro por semana (ISO-8601) -->
     <label for="semanaFiltro" style="display:none;">Semana:</label>
     <input type="week" id="semanaFiltro" style="display:none;" />
 
@@ -78,6 +96,7 @@
   <!-- Indicadores -->
   <section id="seccionIndicadores">
     <h2>Indicadores por Turno</h2>
+    <!-- Total del Día + indicadores individuales -->
     <div id="indicadores"></div>
   </section>
 

@@ -145,21 +145,34 @@ async function cargarIndicadores(queryString) {
     const indicadores = await res.json();
     const cont        = document.getElementById('indicadores');
 
-    cont.innerHTML = '';
+    /* ---------- Total del Día ---------- */
+    const totalDia = indicadores.reduce((acc, it) => acc + it.pagos.total, 0);
+    const supera   = totalDia > 1000;
+    const totalHtml = `
+      <div class="indicador-total">
+        <div>
+          <h3>Total del Día</h3>
+          <p><strong>$${totalDia.toFixed(2)}</strong></p>
+          <p class="${supera ? 'comisiona' : 'nocomisiona'}">
+            ${supera ? 'COMISIONA' : 'NO COMISIONA'}
+          </p>
+        </div>
+      </div>`;
 
-    indicadores.forEach(it => {
-      cont.insertAdjacentHTML(
-        'beforeend',
-        `<div class="indicador">
-           <h3>${it.tipoTurno}</h3>
-           <p>Ferro: $${it.pagos.ferro.toFixed(2)}</p>
-           <p>Efectivo: $${it.pagos.efectivo.toFixed(2)}</p>
-           <p>Transferencia: $${it.pagos.transferencia.toFixed(2)}</p>
-           <hr>
-           <p><strong>Total: $${it.pagos.total.toFixed(2)}</strong></p>
-         </div>`
-      );
-    });
+    /* ---------- Indicadores individuales por turno ---------- */
+    const detalleHtml = indicadores.map(it => `
+      <div class="indicador">
+        <h3>${it.tipoTurno}</h3>
+        <p>Ferro: $${it.pagos.ferro.toFixed(2)}</p>
+        <p>Efectivo: $${it.pagos.efectivo.toFixed(2)}</p>
+        <p>Transferencia: $${it.pagos.transferencia.toFixed(2)}</p>
+        <hr>
+        <p><strong>Total: $${it.pagos.total.toFixed(2)}</strong></p>
+      </div>
+    `).join('');
+
+    // Renderizar
+    cont.innerHTML = totalHtml + detalleHtml;
   } catch (err) {
     console.error('Error cargando indicadores:', err);
   }
