@@ -1,36 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registrar venta</title>
-  <link href="Bea/css/registrarventa.css" rel="stylesheet" />
- 
-</head>
-<body>
-  
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar venta</title>
+    <link href="Bea/css/registrarventa.css" rel="stylesheet" />
+  </head>
+
+  <body>
     <form id="formularioVenta" style="text-align: center">
-
-
       <h1>Registrar una venta</h1>
 
-      <label for="monto">Monto</label>
-      <input type="text" id="montoTotal" name="monto" step="0.01" required />
+      <!-- ID de Producto -->
+      <label for="ID_Producto">ID Producto</label>
+      <input
+        type="number"
+        id="ID_Producto"
+        name="ID_Producto"
+        min="1"
+        step="1"
+        required
+      />
 
+      <!-- Monto -->
+      <label for="monto">Monto</label>
+      <input
+        type="text"
+        id="montoTotal"
+        name="monto"
+        step="0.01"
+        required
+      />
+
+      <!-- Hora opcional -->
       <label for="hora">Hora (opcional)</label>
       <input type="time" id="hora" name="hora" />
 
+      <!-- Medio de pago -->
       <div class="radio-group">
         <label>Medio de pago</label>
-        <label><input type="radio" name="medio_pago" value="transferencia" required /> Transferencia</label>
-        <label><input type="radio" name="medio_pago" value="ferro" /> Ferro</label>
-        <label><input type="radio" name="medio_pago" value="efectivo" /> Efectivo</label>
+        <label
+          ><input
+            type="radio"
+            name="medio_pago"
+            value="transferencia"
+            required
+          />
+          Transferencia</label
+        >
+        <label
+          ><input type="radio" name="medio_pago" value="ferro" /> Ferro</label
+        >
+        <label
+          ><input type="radio" name="medio_pago" value="efectivo" /> Efectivo</label
+        >
+      </div>
+
+      <!-- Tipo de turno -->
+      <div class="radio-group">
+        <label>Tipo de turno</label>
+        <label
+          ><input type="radio" name="tipo_turno" value="1" required /> Mañana</label
+        >
+        <label
+          ><input type="radio" name="tipo_turno" value="2" /> Tarde</label
+        >
+        <label
+          ><input type="radio" name="tipo_turno" value="3" /> Noche</label
+        >
       </div>
 
       <button type="submit">Registrar Venta</button>
     </form>
-  </div>
-<script src="Bea/js/regisVentaMetodos.js"></script>
 
-</body>
+    <script src="Bea/js/regisVentaMetodos.js"></script>
+  </body>
 </html>
