@@ -1,147 +1,97 @@
+
+/* Botón Volver */
+.btn-volver {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-volver:hover {
+  background-color: #218838;
+}
+
+/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align to top to match the Figma layout more closely */
-    min-height: 100vh;
-    margin: 0;
-    padding-top: 50px; /* Add some top padding to simulate the Figma top bar */
-    box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  background-color: #27827B;
+  margin: 0;
+  padding: 0;
 }
 
+/* Contenedor principal */
 .container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    /* max-width: 900px; /* Adjust as needed */
-    width: 100%;
-    align-items: center; /* Center content horizontally */
+  max-width: 900px;
+  margin: 80px auto 40px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Common Button Styles */
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
+/* Encabezado */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-/* Dialog Box (Confirmation) */
-.dialog-box {
-    background-color: #ff4d4f; /* Red color as in the image */
-    color: white;
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 350px; /* Approximate width from image */
-    display: none; /* Hidden by default, shown with .active */
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+.header h1 {
+  margin: 0;
+  font-size: 24px;
 }
 
-.dialog-box.active {
-    display: flex;
+/* Grupo de entrada y botón */
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
 }
 
-.dialog-question {
-    font-size: 1.3em;
-    margin-bottom: 15px;
+.form-group input[type="date"],
+.form-group button {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.dialog-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+.form-group button {
+  background-color: #28a745;;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.btn-yes {
-    background-color: white;
-    color: #ff4d4f;
-    padding: 10px 30px;
+.form-group button:hover {
+  background-color: #0056b3;
 }
 
-.btn-no {
-    background-color: white;
-    color: #ff4d4f;
-    padding: 10px 30px;
+/* Tabla de ventas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-/* Success Message */
-.success-box {
-    background-color: #38b000; /* Green color from the image for success */
-    color: white;
-    padding: 20px 30px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 350px; /* Approximate width */
-    display: none; /* Hidden by default, shown with .active */
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
 }
 
-.success-box.active {
-    display: block;
-}
-
-.success-text {
-    font-size: 1.2em;
-    margin: 0;
-}
-
-/* Search Sales Container (Right panel in Figma) */
-.search-sales-container {
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 250px; /* Approximate width */
-    text-align: center; /* For button alignment */
-}
-
-.search-input-group,
-.sales-list-group,
-.delete-action-group {
-    width: 100%; /* Ensure buttons take full width of their group */
-}
-
-.search-sales-container .btn {
-    background-color: #e0e0e0; /* Light grey for these buttons */
-    color: #333;
-    width: 100%;
-    text-align: left; /* Align text to left inside buttons */
-    padding-left: 15px;
-}
-
-.search-sales-container .delete-btn {
-    background-color: #e0e0e0;
-    color: #333;
-    text-align: center; /* ELIMINAR button is centered */
-}
-
-
-/* Placeholder for the actual sales item to be deleted or other content */
-.sales-item-placeholder {
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 250px; /* Same width as search container */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.action-delete-item {
-    background-color: #007bff; /* Example blue for another delete button */
-    color: white;
+th {
+  background-color: #f8f8f8;
 }

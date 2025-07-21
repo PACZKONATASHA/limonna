@@ -4,43 +4,36 @@
   <meta charset="UTF-8">
   <title>Eliminar Venta</title>
   <link rel="stylesheet" href="natasha/css/ventaEliminar.css">
-  <style>
-  .btn-volver {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: #28a745;
-    color: white;
-    padding: 6px 12px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-  }
-
-  .btn-volver:hover {
-    background-color: #218838;
-  }
-</style>
 </head>
 <body>
   <a href="/ventas" class="btn-volver">← Volver</a>
-  <h1>Buscar ventas</h1>
-  <input type="date" id="fechaBusqueda">
-  <button id="btnBuscar">buscar venta</button>
 
-  <table id="tablaVentas">
-    <thead>
-      <tr>
-        <th>ID</th><th>Producto</th><th>Usuario</th><th>Fecha</th><th>Hora</th><th>Acción</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div class="container">
+    <div class="header">
+      <h1>Buscar ventas</h1>
+      <div class="form-group">
+        <input type="date" id="fechaBusqueda">
+        <button id="btnBuscar">Buscar Venta</button>
+      </div>
+    </div>
+
+    <table id="tablaVentas">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Producto</th>
+          <th>Usuario</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filas de ventas -->
+      </tbody>
+    </table>
+  </div>
 
   <script src="natasha/js/ventaEliminar.js"></script>
 </body>
 </html>
-

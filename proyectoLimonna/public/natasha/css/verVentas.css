@@ -1,98 +1,122 @@
-/* public/natasha/css/verVentas.css */
 
-/* Estilos generales */
+/* Fondo general */
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
-  background: #fafafa;
-  color: #333;
+  background-color: #27827b;
+  margin: 0;
+  padding: 0;
 }
 
-/* Encabezados */
-h1, h2 {
-  color: #27827b;
-  margin-bottom: 10px;
+/* Botón volver */
+.btn-volver {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+.btn-volver:hover {
+  background-color: #218838;
 }
 
-/* Contenedor de filtros */
-.filtros {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* Contenedor principal */
+.container {
+  max-width: 1000px;
+  margin: 80px auto 40px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px #28a745(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+.container h1,
+.container h2 {
+  text-align: center;
   margin-bottom: 20px;
 }
 
+/* Filtros */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
 .filtros label {
-  font-weight: bold;
+  font-weight: 600;
+  margin-right: 5px;
 }
-
-.filtros input[type="date"],
-.filtros select {
-  padding: 5px;
-  font-size: 1rem;
-}
-
+.filtros input,
+.filtros select,
 .filtros button {
-  background: #27827b;
-  color: #fff;
-  border: none;
-  padding: 7px 15px;
-  font-size: 1rem;
+  padding: 8px 10px;
   border-radius: 4px;
-  cursor: pointer;
+  border: 1px solid #ced4da;
+  font-size: 14px;
 }
-
+.filtros button {
+  background-color:  #28a745;;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
 .filtros button:hover {
-  background: #1f665e;
+  background-color:  #28a745;
+}
+#modoVista {
+  width: 130px;
 }
 
-/* Tabla de ventas */
+/* Tabla */
 #tablaVentas {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
-
 #tablaVentas th,
 #tablaVentas td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-  font-size: 0.95rem;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
 }
-
-#tablaVentas thead {
-  background: #e0f2f1;
-}
-
-#tablaVentas tbody tr:nth-child(even) {
-  background: #f9f9f9;
+#tablaVentas th {
+  background-color: #f8f8f8;
 }
 
 /* Indicadores */
-#indicadores {
+#indicadores,
+.indicador-total {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 10px;
+  gap: 1rem;
+  justify-content: center;
 }
-
-.indicador {
-  background: #fff;
-  border: 1px solid #ccc;
+.indicador,
+.indicador-total > div {
+  border: 1px solid #dee2e6;
   border-radius: 6px;
-  padding: 15px;
-  width: 200px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: .75rem 1rem;
+  min-width: 160px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .05);
+  background-color: #fefefe;
+  text-align: center;
 }
 
-.indicador h3 {
-  margin-top: 0;
-  font-size: 1.1rem;
-  color: #005b4f;
+/* Colores de estado */
+.comisiona {
+  color: #28a745;
+  font-weight: 700;
 }
-
-.indicador p {
-  margin: 5px 0;
-  font-size: 0.95rem;
+.nocomisiona {
+  color:  #28a745;
+  font-weight: 700;
 }

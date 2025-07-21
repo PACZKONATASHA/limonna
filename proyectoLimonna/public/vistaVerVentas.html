@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,104 +6,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ver Ventas</title>
   <link rel="stylesheet" href="/natasha/css/verVentas.css" />
-
-  <style>
-    /* Botón «Volver» */
-    .btn-volver {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background-color: #28a745;
-      color: #fff;
-      padding: 6px 12px;
-      font-size: 14px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-    }
-    .btn-volver:hover { background-color: #218838; }
-
-    /* Filtros */
-    .filtros { margin-bottom: 1rem; display: flex; gap: .5rem; flex-wrap: wrap; }
-    .filtros label { font-weight: 600; }
-    .filtros input,
-    .filtros select,
-    .filtros button {
-      padding: .25rem .5rem;
-      border-radius: 4px;
-      border: 1px solid #ced4da;
-      font-size: 14px;
-    }
-    #modoVista { width: 130px; }
-
-    /* Indicadores */
-    #indicadores,
-    .indicador-total { display: flex; flex-wrap: wrap; gap: 1rem; }
-    .indicador,
-    .indicador-total > div {
-      border: 1px solid #dee2e6;
-      border-radius: 6px;
-      padding: .75rem 1rem;
-      min-width: 160px;
-      box-shadow: 0 0 4px rgba(0,0,0,.05);
-    }
-    /* Colores del resultado */
-    .comisiona   { color: #28a745; font-weight: 700; }
-    .nocomisiona { color: #007bff; font-weight: 700; }
-  </style>
 </head>
 
 <body>
   <a href="/ventas" class="btn-volver">← Volver</a>
 
-  <h1>Ver Ventas</h1>
+  <div class="container">
+    <h1>Ver Ventas</h1>
 
-  <!-- Barra de filtros -->
-  <div class="filtros">
-    <label for="modoVista">Agrupar por:</label>
-    <select id="modoVista">
-      <option value="dia">Día</option>
-      <option value="semana">Semana</option>
-      <option value="mes">Mes</option>
-    </select>
+    <!-- Filtros -->
+    <div class="filtros">
+      <label for="modoVista">Agrupar por:</label>
+      <select id="modoVista">
+        <option value="dia">Día</option>
+        <option value="semana">Semana</option>
+        <option value="mes">Mes</option>
+      </select>
 
-    <!-- Filtro por día -->
-    <label for="fechaFiltro">Fecha:</label>
-    <input type="date" id="fechaFiltro" />
+      <label for="fechaFiltro">Fecha:</label>
+      <input type="date" id="fechaFiltro" />
 
-    <!-- Filtro por semana (ISO‑8601) -->
-    <label for="semanaFiltro" style="display:none;">Semana:</label>
-    <input type="week" id="semanaFiltro" style="display:none;" />
+      <label for="semanaFiltro" style="display: none;">Semana:</label>
+      <input type="week" id="semanaFiltro" style="display: none;" />
 
-    <!-- Filtro por mes -->
-    <label for="mesFiltro" style="display:none;">Mes:</label>
-    <input type="month" id="mesFiltro" style="display:none;" />
+      <label for="mesFiltro" style="display: none;">Mes:</label>
+      <input type="month" id="mesFiltro" style="display: none;" />
 
-    <!-- Filtro por usuario -->
-    <label for="usuarioFiltro">Usuario:</label>
-    <select id="usuarioFiltro">
-      <option value="">Todos</option>
-    </select>
+      <label for="usuarioFiltro">Usuario:</label>
+      <select id="usuarioFiltro">
+        <option value="">Todos</option>
+      </select>
 
-    <button id="btnBuscar">Buscar</button>
+      <button id="btnBuscar">Buscar</button>
+    </div>
+
+    <!-- Tabla/Listado -->
+    <section id="seccionVentas">
+      <h2>Listado de Ventas</h2>
+      <table id="tablaVentas">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Indicadores -->
+    <section id="seccionIndicadores">
+      <h2>Indicadores</h2>
+      <div id="indicadores"></div>
+    </section>
   </div>
-
-  <!-- Tabla/Listado -->
-  <section id="seccionVentas">
-    <h2>Listado de Ventas</h2>
-    <table id="tablaVentas">
-      <thead></thead>
-      <tbody></tbody>
-    </table>
-  </section>
-
-  <!-- Indicadores -->
-  <section id="seccionIndicadores">
-    <h2>Indicadores</h2>
-    <div id="indicadores"></div>
-  </section>
 
   <script src="/natasha/js/verVentas.js"></script>
 </body>
