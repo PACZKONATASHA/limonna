@@ -32,6 +32,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background-image: url(../src/patron_fondo.jpg);
 }
 
 /* Contenedor del formulario */
