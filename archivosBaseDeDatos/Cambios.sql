@@ -8,6 +8,11 @@ ALTER TABLE Usuario
 DROP COLUMN Activo;
 
 ALTER TABLE Venta
+ADD COLUMN montoTotal DECIMAL(10,2);
+
+AlTER TABLE Turno ADD COLUMN estado ENUM('activo','cerrado') DEFAULT 'activo';
+
+ALTER TABLE Venta
   ADD COLUMN ID_TipoTurno INT AFTER ID_TipoPago,
   ADD CONSTRAINT fk_venta_tipoturno
          FOREIGN KEY (ID_TipoTurno) REFERENCES TipoTurno(ID_TipoTurno);
@@ -19,21 +24,18 @@ CREATE TABLE TipoPago (
     nombre VARCHAR(50) NOT NULL
 );
 
--- Agregar la clave foránea para ID_TipoPago si no existe aún
-ALTER TABLE Venta
-ADD CONSTRAINT FK_Venta_TipoPago FOREIGN KEY (ID_TipoPago) REFERENCES TipoPago(ID_TipoPago);
 
-INSERT INTO TipoTurno (ID_TipoTurno, nombre)
-VALUES 
-  (1, 'primer medio turno mañana'),
-  (2, 'segundo medio turno mañana'),
-  (3, 'primer medio turno tarde'),
-  (4, 'segundo medio turno tarde');
 
 INSERT INTO TipoPago (ID_TipoPago, nombre) VALUES
 (1, 'ferro'),
 (2, 'efectivo'),
 (3, 'transferencia');
+
+-- Agregar la clave foránea para ID_TipoPago si no existe aún
+ALTER TABLE Venta
+ADD CONSTRAINT FK_Venta_TipoPago FOREIGN KEY (ID_TipoPago) REFERENCES TipoPago(ID_TipoPago);
+
+
 
 INSERT INTO Categoria (nombre) VALUES
 ('nuez'),
@@ -49,7 +51,7 @@ INSERT INTO Producto (ID_Producto, ID_Categoria, Nombre, PrecioUnitario) VALUES
 (104, 4, 'quimoa', 300.00),
 (105, 5, 'frutos secos', 350.00);
 
-INSERT INTO Usuario (DNI, Nombre, Apellido, CodigoMaster, NombreUsuario, Email, Activo, esDueña, esEmpleada) VALUES
+INSERT INTO Usuario (DNI, Nombre, Apellido, CodigoMaster, NombreUsuario, Email, esDueña, esEmpleada,contrasena) VALUES
 ('10000001', 'Ana', 'Pérez', 'CM001', 'anap', 'ana@example.com', TRUE, TRUE, FALSE),
 ('10000002', 'Luis', 'Gómez', NULL, 'luisg', 'luis@example.com', TRUE, FALSE, TRUE),
 ('10000003', 'Marta', 'Rodríguez', NULL, 'martar', 'marta@example.com', TRUE, FALSE, TRUE),
@@ -146,5 +148,3 @@ INSERT INTO Venta (ID_Producto, DNI, ID_TipoPago, ID_TipoTurno, Dia, Mes, Año, 
 (123, '10000003', 2, 1, 28, 6, 2025, '23:30:00'),
 (124, '10000004', 3, 2, 29, 6, 2025, '00:00:00'),
 (125, '10000005', 1, 3, 30, 6, 2025, '00:30:00');
-
-

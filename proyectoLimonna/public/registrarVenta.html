@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrar venta</title>
+  <link href="Bea/css/registrarventa.css" rel="stylesheet" />
+ 
+</head>
+<body>
+  
+    <form id="formularioVenta" style="text-align: center">
+
+
+      <h1>Registrar una venta</h1>
+
+      <label for="monto">Monto</label>
+      <input type="text" id="montoTotal" name="monto" step="0.01" required />
+
+      <label for="hora">Hora (opcional)</label>
+      <input type="time" id="hora" name="hora" />
+
+      <div class="radio-group">
+        <label>Medio de pago</label>
+        <label><input type="radio" name="medio_pago" value="transferencia" required /> Transferencia</label>
+        <label><input type="radio" name="medio_pago" value="ferro" /> Ferro</label>
+        <label><input type="radio" name="medio_pago" value="efectivo" /> Efectivo</label>
+      </div>
+
+      <button type="submit">Registrar Venta</button>
+    </form>
+  </div>
+<script src="Bea/js/regisVentaMetodos.js"></script>
+
+</body>
+</html>

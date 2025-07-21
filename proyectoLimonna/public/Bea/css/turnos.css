@@ -1,0 +1,130 @@
+body {
+  background-color: var(--bg-color);
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #27827B ;
+ 
+}
+
+.menu-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  width: 90%;
+  max-width: 500px;
+  padding: 30px 40px;
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+textarea,
+input[type="date"],
+input[type="time"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+textarea:focus,
+input[type="date"]:focus,
+input[type="time"]:focus {
+  outline: none;
+  border-color: #545454; 
+  box-shadow: 0 0 5px rgba(166, 248, 146, 0.5);
+}
+
+button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 15px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  background: #cfd46e; 
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #545454;
+}
+
+/* Para separar visualmente cada input */
+form > *:not(:last-child) {
+  margin-bottom: 15px;
+}
+.grupo-turno {
+  margin-bottom: 25px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.grupo-titulo {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.radio-btn {
+  margin-right: 15px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 10px;
+  margin-right: 8px;
+}
+
+.radio-btn input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.radio-btn span {
+  padding: 12px 25px;
+  border-radius: 25px;
+  background-color: #cfd46e;
+  color: #fff;
+  font-weight: 700;
+  border: 2px solid transparent;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+.radio-btn input[type="radio"]:checked + span {
+  background-color: #545454;
+  border-color: #cfd46e;
+}
+
+

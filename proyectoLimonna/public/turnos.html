@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="Bea/css/turnos.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    
+    <div class="menu-container">
+      <form style="text-align: center;" id="turnos-form" method="POST" action="/turnos">
+
+      <h1>Turnos</h1>
+
+      <div class="grupo-turno">
+      <label class="grupo-titulo">Turno completo</label>
+      <label class="radio-btn">
+      <input type="radio" name="turno" value="mañana">
+      <span>Mañana</span>
+      </label>
+      <label class="radio-btn">
+      <input type="radio" name="turno" value="tarde">
+      <span>Tarde</span>
+      </label>
+    </div>
+
+  <div class="grupo-turno">
+    <label class="grupo-titulo">Medio turno</label>
+    <div>
+        <label class="radio-btn">
+      <input type="radio" name="turno" value="1er turno media mañana">
+      <span>1er turno media mañana</span>
+    </label>
+    <label class="radio-btn">
+      <input type="radio" name="turno" value="2do turno media mañana">
+      <span>2do turno media mañana</span>
+    </label>
+    </div>
+    <div>
+       <label class="radio-btn">
+      <input type="radio" name="turno" value="1er turno media tarde">
+      <span>1er turno media tarde</span>
+    </label>
+    <br>
+      <label class="radio-btn">
+      <input type="radio" name="turno" value="2do turno media tarde">
+      <span>2do turno media tarde</span>
+    </label>
+    </div>
+   
+  </div>
+
+  <button type="submit">Guardar Turno</button>
+</form>
+
+
+    </div>
+    <script src="Bea/js/menuMetodos.js"></script>
+    <script src="Bea/js/turnosMetodos.js"></script>
+</body>
+</html>

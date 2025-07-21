@@ -37,6 +37,8 @@ async function crearUsuario(req, res) {
 
 //Login usuarios
 
+//MODIFICACIÓN AGREGADA POR BEA EL 11/06 SOBRE EL METODO loginUsuario
+
 const loginUsuario = async (req, res) => {
   const { usuario, pass } = req.body;
 
@@ -47,7 +49,18 @@ const loginUsuario = async (req, res) => {
     );
 
     if (rows.length > 0) {
-      res.status(200).json({ accesoPermitido: true });
+        const usuarioLogueado = rows[0];
+      req.session.usuario = {
+        DNI: usuarioLogueado.DNI,
+        Nombre: usuarioLogueado.Nombre,
+        Apellido: usuarioLogueado.Apellido,
+        NombreUsuario: usuarioLogueado.NombreUsuario,
+        Email: usuarioLogueado.Email,
+        esDueña: usuarioLogueado.esDueña,
+        esEmpleada: usuarioLogueado.esEmpleada
+      };
+
+      res.status(200).json({ accesoPermitido: true, DNI: usuarioLogueado.DNI });
     } else {
       res.status(401).json({ accesoPermitido: false });
     }

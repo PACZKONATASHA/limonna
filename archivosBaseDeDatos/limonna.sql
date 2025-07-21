@@ -52,6 +52,17 @@ CREATE TABLE Turno (
     FOREIGN KEY (ID_TipoTurno) REFERENCES TipoTurno(ID_TipoTurno)
 );
 
+INSERT INTO TipoTurno (nombre) VALUES 
+('mañana'),
+('tarde'),
+('1er turno media mañana'),
+('2do turno media mañana'),
+('1er turno media tarde'),
+('2do turno media tarde');
+
+SELECT * FROM TipoTurno;
+
+
 -- Tabla Venta
 CREATE TABLE Venta (
     ID_Venta INT PRIMARY KEY AUTO_INCREMENT,

@@ -19,6 +19,7 @@ document.getElementById("botonIngresar").addEventListener("click", async (e) => 
     const data = await response.json();
 
     if (data.accesoPermitido) {
+        localStorage.setItem("dniUsuario", data.DNI);
         alert("¡Bienvenido/a!");
         window.location.href = "/menuPrincipal.html";
     } else {
