@@ -59,7 +59,7 @@ let divInputPass = document.createElement("div");
 row.appendChild(divInputPass);
 
 let inputPass = document.createElement("input");
-inputPass.setAttribute("type", "text");
+inputPass.setAttribute("type", "password");
 inputPass.classList.add("col-sm-6");
 inputPass.classList.add("offset-sm-3");
 inputPass.classList.add("w-50","mx-auto");

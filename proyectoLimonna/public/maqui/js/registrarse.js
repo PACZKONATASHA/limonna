@@ -101,7 +101,7 @@ let divInputPass = document.createElement("div");
 row.appendChild(divInputPass);
 
 let inputPass = document.createElement("input");
-inputPass.setAttribute("type", "text");
+inputPass.setAttribute("type", "password");
 inputPass.classList.add("col-sm-6");
 inputPass.classList.add("offset-sm-3");
 inputPass.classList.add("w-50","mx-auto");
@@ -120,7 +120,7 @@ let divInputPass2 = document.createElement("div");
 row.appendChild(divInputPass2);
 
 let inputPass2 = document.createElement("input");
-inputPass2.setAttribute("type", "text");
+inputPass2.setAttribute("type", "password");
 inputPass2.classList.add("col-sm-6");
 inputPass2.classList.add("offset-sm-3");
 inputPass2.classList.add("w-50","mx-auto");
@@ -148,7 +148,7 @@ labelCodigo.textContent = "Código de activación: ";
 row.appendChild(labelCodigo);
 
 let inputCodigo = document.createElement("input");
-inputCodigo.setAttribute("type","text");
+inputCodigo.setAttribute("type","password");
 inputCodigo.classList.add("col-sm-6","offset-sm-3");
 inputCodigo.classList.add("w-50","mx-auto");
 inputCodigo.setAttribute("id","inputCodigo");
